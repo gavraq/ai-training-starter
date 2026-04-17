@@ -1,3 +1,25 @@
+# AI Training Starter — Phase 2
+
+> **You're on the `phase-2` branch.** This adds memory, a pre-built skill, and a self-improvement slash command to the Phase 1 foundation.
+>
+> Phase 1 is on `main` — check it out first if you want to start simpler.
+
+## What Phase 2 adds on top of Phase 1
+
+- **`PreCompact` + `SessionEnd` hooks** — write session transcripts to `daily/YYYY-MM-DD.md` automatically. Deterministic, no LLM call.
+- **`MEMORY.md`** — a curated long-term memory file. Loaded at every session start alongside your identity files.
+- **`WeeklyDigest` skill** (in `.claude/skills/WeeklyDigest/`) — pre-built. When you ask for a weekly digest, it fires automatically (USE WHEN). Adapt step 4 to your personal angle (fitness / client work / research / family).
+- **`/master-prompt` slash command** — reviews recent sessions and proposes updates to your identity files + MEMORY.md. Run every 2–4 weeks.
+
+## What's the same as Phase 1
+
+- Same identity files (`identity/USER.md`, `SOUL.md`, `GOALS.md`)
+- Same `CLAUDE.md` entry point
+- Same `LoadMasterPrompt` hook (now also loads `MEMORY.md` if present)
+- Same Claude Code as harness
+
+---
+
 # AI Training Starter — Phase 1
 
 > Your personal AI agent. ~6 files, one hook. The thinnest possible outer harness on top of Claude Code.

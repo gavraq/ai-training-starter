@@ -35,6 +35,13 @@ for f in files:
     parts.append(f.read_text())
     parts.append("")
 
+# Phase 2: also load MEMORY.md (curated long-term memory) if present
+memory_path = Path.cwd() / "MEMORY.md"
+if memory_path.exists():
+    parts.append("--- MEMORY.md ---")
+    parts.append(memory_path.read_text())
+    parts.append("")
+
 parts.append("</master-prompt>")
 
 block = "\n".join(parts)

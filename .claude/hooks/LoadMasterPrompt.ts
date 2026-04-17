@@ -38,6 +38,14 @@ for (const f of files) {
   parts.push('');
 }
 
+// Phase 2: also load MEMORY.md (curated long-term memory) if present
+const memoryPath = join(process.cwd(), 'MEMORY.md');
+if (existsSync(memoryPath)) {
+  parts.push('--- MEMORY.md ---');
+  parts.push(readFileSync(memoryPath, 'utf-8'));
+  parts.push('');
+}
+
 parts.push('</master-prompt>');
 
 const block = parts.join('\n');

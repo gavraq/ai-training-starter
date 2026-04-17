@@ -9,13 +9,36 @@
           }
         ]
       }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run $CLAUDE_PROJECT_DIR/.claude/hooks/PreCompactFlush.ts"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run $CLAUDE_PROJECT_DIR/.claude/hooks/SessionEndSummary.ts"
+          }
+        ]
+      }
     ]
   },
   "permissions": {
     "allow": [
       "Read",
       "Write(outputs/**)",
+      "Write(daily/**)",
+      "Write(MEMORY.md)",
       "Edit(identity/**)",
+      "Edit(MEMORY.md)",
       "Bash(ls:*)",
       "Bash(git status)",
       "Bash(git diff:*)",

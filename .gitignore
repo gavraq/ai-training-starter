@@ -36,3 +36,8 @@ outputs/*
 # else you drop in stays local.
 inputs/*
 !inputs/EXAMPLE-week.md
+
+# Personal daily logs (Phase 2: written by PreCompact + SessionEnd hooks).
+# Keep the folder (.gitkeep) but not its contents.
+daily/*
+!daily/.gitkeep
