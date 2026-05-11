@@ -8,27 +8,29 @@
 
 - **`PreCompact` + `SessionEnd` hooks** — write session transcripts to `daily/YYYY-MM-DD.md` automatically. Deterministic, no LLM call.
 - **`MEMORY.md`** — a curated long-term memory file. Loaded at every session start alongside your identity files.
-- **`WeeklyDigest` skill** (in `.claude/skills/WeeklyDigest/`) — pre-built. When you ask for a weekly digest, it fires automatically (USE WHEN). Adapt step 4 to your personal angle (fitness / client work / research / family).
+- **`WeeklyDigest` skill** (in `.claude/skills/WeeklyDigest/`) — pre-built. When you ask for a weekly digest, it fires automatically (USE WHEN). Adapt step 4 to your personal angle (fitness / client work / research / family). Joins the `CreateSkill` skill that already shipped in Phase 1.
 - **`/master-prompt` slash command** — reviews recent sessions and proposes updates to your identity files + MEMORY.md. Run every 2–4 weeks.
 
 ## What's the same as Phase 1
 
 - Same identity files (`identity/USER.md`, `SOUL.md`, `GOALS.md`)
 - Same `CLAUDE.md` entry point
+- Same `homework-prompts.md` for AI-interview filling of identity files
 - Same `LoadMasterPrompt` hook (now also loads `MEMORY.md` if present)
+- Same `CreateSkill` meta-skill (any skills you authored in Phase 1 keep working)
 - Same Claude Code as harness
 
 ---
 
 # AI Training Starter — Phase 1
 
-> Your personal AI agent. ~6 files, one hook. The thinnest possible outer harness on top of Claude Code.
+> Your personal AI agent. ~12 files, one hook, plus the meta-skill that lets you build your own. The thinnest useful outer harness on top of Claude Code.
 
-This repo is the teaching template for the **AI Training** course (Session 6). It's the simplest possible personal AI agent: a Claude Code project that auto-loads your identity at every session start. Nothing more.
+This repo is the teaching template for the **AI Training** course (Session 4 — the build session). The simplest possible personal AI agent: a Claude Code project that auto-loads your identity at every session start, ships with `CreateSkill` so you can author your own skills, and gets out of your way.
 
-**What it is**: a starting point you clone, fill in with your own identity (Master Prompt), and run Claude Code against. You end up with an agent that already knows who you are, every time you open a session.
+**What it is**: a starting point you clone, fill in with your own identity (Master Prompt), and run Claude Code against. You end up with an agent that already knows who you are, every time you open a session — plus the framework to teach it new tricks.
 
-**What it is not**: a fully-featured assistant. No memory across sessions yet. No skills. No tool integrations. That's Phase 2 and beyond.
+**What it is not**: a fully-featured assistant. No memory across sessions yet. No tool integrations (Gmail, Calendar, etc.). The formal `WeeklyDigest` skill, memory hooks, and self-improvement slash command all ship in Phase 2.
 
 ## Quick start
 
@@ -43,6 +45,8 @@ This repo is the teaching template for the **AI Training** course (Session 6). I
    - `SOUL.md` — how you like to work (voice, style, rules, quality bar)
    - `GOALS.md` — what you're trying to do (short/mid/long-term)
    Treat the templates as prompts. Overwrite completely.
+
+   *Stuck on a blank page?* See `homework-prompts.md` for the AI-interview alternative — paste each prompt into ChatGPT or Claude, let it interview you, paste the output back into the template.
 
 3. **Install Claude Code** if you haven't:
    ```
@@ -63,12 +67,21 @@ This repo is the teaching template for the **AI Training** course (Session 6). I
    - In Claude Code, type: *"Generate this week's digest from inputs/ and save it to outputs/"*
    - Claude reads the files, uses your identity context to tailor the output, and writes `outputs/digest-YYYY-MM-DD.md`
 
+7. **Build your first custom skill** — use the `CreateSkill` skill that ships with the starter:
+   - Pick something you do repeatedly that you'd like the agent to handle (a daily review, a meeting follow-up, an email draft pattern — anything with a clear trigger and a clear process)
+   - In Claude Code, type: *"Use the CreateSkill skill to help me build a skill for [your idea]."*
+   - `CreateSkill` interviews you on the trigger phrase, the process steps, the inputs and outputs, then generates a `SKILL.md` and places it under `.claude/skills/<YourSkillName>/`
+   - Restart your Claude Code session and try the trigger phrase — your new skill should fire automatically
+
+   This is the meta moment: AI authoring AI configuration. Your *second* skill takes a fraction of the time of your first — every skill you write the agent inherits. That's the compounding return.
+
 ## What's in this repo
 
 ```
 ai-training-starter/
 ├── README.md                      # You are here
 ├── CLAUDE.md                      # Always-loaded by Claude Code — the entry point
+├── homework-prompts.md            # AI-interview prompts for filling in identity files
 ├── identity/
 │   ├── USER.md                    # Who you are (template to overwrite)
 │   ├── SOUL.md                    # Voice, style, rules (template)
@@ -81,12 +94,16 @@ ai-training-starter/
 │   ├── hooks/
 │   │   ├── LoadMasterPrompt.ts    # THE hook — ~30 lines. TypeScript / Bun
 │   │   └── LoadMasterPrompt.py    # Python variant — same behaviour, same shape
+│   ├── skills/
+│   │   └── CreateSkill/           # Meta-skill: use this to author your own skills
+│   │       ├── SKILL.md
+│   │       └── Workflows/         # Create / Validate / Update / Canonicalize
 │   └── settings.json              # Registers the hook (committed — shared default)
 ├── .gitignore
 └── LICENSE                        # MIT
 ```
 
-That's it. Six or so files and one hook. You'll be shocked how small it is.
+A dozen files, one hook, one meta-skill. You'll be shocked how small it is.
 
 ## Picking TypeScript or Python for the hook
 
@@ -103,13 +120,22 @@ On `SessionStart`, the hook reads every `.md` file in `identity/`, wraps them in
 
 ## What comes next — Phase 2 and beyond
 
-Phase 1 loads your identity every session. That's the 60% solution.
+Phase 1 loads your identity every session and lets you author skills. That's already useful. But the agent forgets between sessions, and you have to type the full digest prompt each time.
 
-**Phase 2** (Session 7 in the course — coming as a `phase-2` branch to this repo):
+**Phase 2** (Session 5 in the course — on the `phase-2` branch of this repo):
 - `PreCompact` + `SessionEnd` hooks — automatic session memory to `daily/`
-- A pre-built `WeeklyDigest` skill — the digest becomes automatic, no need to type the full prompt
+- A pre-built `WeeklyDigest` skill — the digest fires automatically when you ask for one, no need to type the full prompt
 - `MEMORY.md` — curated long-term memory (decisions, preferences, patterns) loaded alongside identity
 - `/master-prompt` slash command — periodic review + self-update of your identity files
+
+To get Phase 2 once you've used Phase 1 for a week or two:
+
+```
+git fetch origin
+git merge origin/phase-2
+```
+
+Your custom skills from Phase 1 (anything you built with `CreateSkill`) survive the merge — they live in their own folders under `.claude/skills/`.
 
 **Phases 3–6** (beyond the course):
 - More slash commands (`/reflect`, `/end-of-day`)
