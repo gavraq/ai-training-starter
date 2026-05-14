@@ -1,23 +1,50 @@
 #!/usr/bin/env bun
 /**
- * SessionStart hook: loads identity/*.md into the session context.
+ * SessionStart hook: loads <vault>/identity/*.md into the session context.
  * Deterministic, no LLM call. Runs once per session start.
  *
- * Reads every .md file in the identity/ folder, wraps them in a
+ * Auto-detects the vault directory: looks for any folder named `vault`
+ * or ending in `-vault` (e.g. `chiefofstaff-vault`, `jarvis-vault`).
+ * This way participants can rename `vault/` → `<their-agent-name>-vault/`
+ * after cloning, and the hook still finds it.
+ *
+ * Reads every .md file in <vault>/identity/, wraps them in a
  * <master-prompt>...</master-prompt> block, and hands the block to
  * Claude Code via the additionalContext channel.
  *
- * To switch to the Python variant: edit .claude/settings.local.json
+ * To switch to the Python variant: edit .claude/settings.json
  * and change the command to `python3 .claude/hooks/LoadMasterPrompt.py`.
  */
 
-import { readFileSync, readdirSync, existsSync } from 'fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'fs';
 import { join } from 'path';
 
-const identityDir = join(process.cwd(), 'identity');
+const cwd = process.cwd();
+
+// Find the vault directory (any folder named `vault` or ending in `-vault`)
+const vaultDir = readdirSync(cwd)
+  .filter((d) => {
+    try {
+      return statSync(join(cwd, d)).isDirectory();
+    } catch {
+      return false;
+    }
+  })
+  .find((d) => d === 'vault' || d.endsWith('-vault'));
+
+if (!vaultDir) {
+  console.error(
+    '[LoadMasterPrompt] No vault directory found (looking for `vault` or `*-vault`). Skipping.',
+  );
+  process.exit(0);
+}
+
+const identityDir = join(cwd, vaultDir, 'identity');
 
 if (!existsSync(identityDir)) {
-  console.error('[LoadMasterPrompt] identity/ folder not found — skipping');
+  console.error(
+    `[LoadMasterPrompt] ${vaultDir}/identity/ folder not found — skipping`,
+  );
   process.exit(0);
 }
 
@@ -27,7 +54,7 @@ const files = readdirSync(identityDir)
 
 const parts: string[] = [
   '<master-prompt>',
-  'The following files describe the user. Load them into context for this session and tailor every response accordingly.',
+  `The following files (from ${vaultDir}/identity/) describe the user. Load them into context for this session and tailor every response accordingly.`,
   '',
 ];
 

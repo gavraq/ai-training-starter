@@ -14,8 +14,11 @@
   "permissions": {
     "allow": [
       "Read",
-      "Write(outputs/**)",
-      "Edit(identity/**)",
+      "Write(vault/outputs/**)",
+      "Write(*-vault/outputs/**)",
+      "Edit(vault/identity/**)",
+      "Edit(*-vault/identity/**)",
+      "Bash(mv:*)",
       "Bash(ls:*)",
       "Bash(git status)",
       "Bash(git diff:*)",

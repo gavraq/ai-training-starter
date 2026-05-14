@@ -2,7 +2,7 @@
 
 > **Two ways to fill in your identity files**:
 >
-> 1. **Direct**: open `identity/SOUL.md`, `identity/USER.md`, `identity/GOALS.md` and replace the `[placeholder text]` in each section. Fast if you know what to write.
+> 1. **Direct**: open `vault/identity/SOUL.md`, `vault/identity/USER.md`, `vault/identity/GOALS.md` and replace the `[placeholder text]` in each section. Fast if you know what to write.
 > 2. **AI-interview**: paste the prompts below into a fresh ChatGPT or Claude conversation. Let the AI interview you. Paste the output back into the template files. Better if you find a blank page paralysing.
 >
 > Both paths produce the same outcome. Pick whichever feels lower-friction.
@@ -45,7 +45,7 @@ How I'd like you to do this:
 - Use British English
 
 At the end, give me the complete file as a single markdown block I can
-paste into identity/SOUL.md.
+paste into vault/identity/SOUL.md.
 
 Ready? Start with Section 1: Voice & tone.
 ```
@@ -86,7 +86,7 @@ How I'd like you to do this:
 - Use British English
 
 At the end, give me the complete file as a single markdown block I can
-paste into identity/USER.md.
+paste into vault/identity/USER.md.
 
 If I already have a "persona file" from a prior exercise, ask me to
 paste it first and use it as the starting point.
@@ -131,7 +131,7 @@ How I'd like you to do this:
 - Use British English
 
 At the end, give me the complete file as a single markdown block I can
-paste into identity/GOALS.md.
+paste into vault/identity/GOALS.md.
 
 Ready? Start with Horizon 1: This week / this month.
 ```
@@ -186,7 +186,7 @@ Ready? Start with Pattern 1: Recurring output.
 
 ## After the interviews
 
-1. **Save the outputs** into `identity/SOUL.md`, `identity/USER.md`, `identity/GOALS.md`
+1. **Save the outputs** into `vault/identity/SOUL.md`, `vault/identity/USER.md`, `vault/identity/GOALS.md`
 2. **Save the skill ideas** somewhere convenient (e.g. as `skill-ideas.md` at the root of the project, or just a notes app — we'll formalise at least one in Session 4)
 3. **Commit** to your local repo before next session
 4. **Bring the gaps** — if any section feels thin or you ran out of time, that's fine. We can refine next week. Rough is better than perfect

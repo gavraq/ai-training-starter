@@ -25,9 +25,22 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
    cd <your-agent-name>
    ```
 
-   The directory name is just the filesystem location — the agent's *identity* (including its friendly name) lives in `identity/SOUL.md`, which you'll fill in next.
+   The directory name is just the filesystem location — the agent's *identity* (including its friendly name) lives in `vault/identity/SOUL.md`, which you'll fill in next.
 
-2. **Fill in your identity** — edit the three files in `identity/`:
+2. **Personalise your vault folder**. The starter ships with a `vault/` folder containing `identity/`, `inputs/`, and `outputs/` — this is the Obsidian-friendly knowledge area for your agent (separate from `.claude/` which holds the code/config). Rename `vault/` to `<your-agent-name>-vault/` to match the convention used in larger setups (e.g. `chiefofstaff-vault/`, `jarvis-vault/`):
+
+   ```
+   mv vault <your-agent-name>-vault
+   ```
+
+   The hook auto-detects any folder named `vault` or ending in `-vault`, so this rename doesn't break anything. (You can skip this step if you prefer — `vault/` works fine.)
+
+3. **Open your vault in Obsidian** (optional but recommended). [Obsidian](https://obsidian.md) is a free markdown editor that renders your identity files, inputs, and outputs nicely, and lets you link between notes with `[[double brackets]]`. After installing:
+   - Open Obsidian → **Open folder as vault** → select `~/projects/<your-agent-name>/<your-agent-name>-vault/`
+   - You'll see `identity/`, `inputs/`, `outputs/` in the left sidebar
+   - Edit your identity files in Obsidian; Claude Code reads them on next session start
+
+4. **Fill in your identity** — edit the three files in `<your-agent-name>-vault/identity/`:
    - `USER.md` — who you are (roles, background, what you work on)
    - `SOUL.md` — how you like to work (voice, style, rules, quality bar). **The first line of SOUL.md is where your agent's friendly name lives** — e.g. *"You are Jarvis, my personal assistant. ..."*
    - `GOALS.md` — what you're trying to do (short/mid/long-term)
@@ -35,26 +48,26 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 
    *Stuck on a blank page?* See `homework-prompts.md` for the AI-interview alternative — paste each prompt into ChatGPT or Claude, let it interview you, paste the output back into the template.
 
-3. **Install Claude Code** if you haven't:
+5. **Install Claude Code** if you haven't:
    ```
    npm install -g @anthropic-ai/claude-code
    ```
    (Or follow [claude.com/claude-code](https://claude.com/claude-code).)
 
-4. **Trust the hook**. The first time you open this folder in Claude Code, it will ask if you want to enable the `SessionStart` hook. Say yes.
+6. **Trust the hook**. The first time you open this folder in Claude Code, it will ask if you want to enable the `SessionStart` hook. Say yes.
 
-5. **Run it**:
+7. **Run it**:
    ```
    claude
    ```
-   When the session opens, the hook fires and your identity files are loaded. You can test by asking: *"Who am I?"* — Claude should answer using what's in `identity/`.
+   When the session opens, the hook fires and your identity files are loaded. You can test by asking: *"Who am I?"* — Claude should answer using what's in your vault's `identity/` folder.
 
-6. **Generate your first weekly digest**:
-   - Drop a week's worth of notes as a markdown file into `inputs/` (see `inputs/EXAMPLE-week.md` for shape)
-   - In Claude Code, type: *"Generate this week's digest from inputs/ and save it to outputs/"*
-   - Claude reads the files, uses your identity context to tailor the output, and writes `outputs/digest-YYYY-MM-DD.md`
+8. **Generate your first weekly digest**:
+   - Drop a week's worth of notes as a markdown file into `<your-agent-name>-vault/inputs/` (see the EXAMPLE file for shape)
+   - In Claude Code, type: *"Generate this week's digest from my vault's inputs and save it to outputs"*
+   - Claude reads the files, uses your identity context to tailor the output, and writes `<your-agent-name>-vault/outputs/digest-YYYY-MM-DD.md`
 
-7. **Build your first custom skill** — use the `create-skill` skill that ships with the starter:
+9. **Build your first custom skill** — use the `create-skill` skill that ships with the starter:
    - Pick something you do repeatedly that you'd like the agent to handle (a daily review, a meeting follow-up, an email draft pattern — anything with a clear trigger and a clear process)
    - In Claude Code, type: *"Use the create-skill skill to help me build a skill for [your idea]."*
    - `create-skill` interviews you on the trigger phrase, the process steps, the inputs and outputs, then generates a `SKILL.md` and places it under `.claude/skills/<your-skill-name>/`
@@ -65,31 +78,34 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 ## What's in this repo
 
 ```
-ai-training-starter/
-├── README.md                      # You are here
-├── CLAUDE.md                      # Always-loaded by Claude Code — the entry point
-├── homework-prompts.md            # AI-interview prompts for filling in identity files
-├── identity/
-│   ├── USER.md                    # Who you are (template to overwrite)
-│   ├── SOUL.md                    # Voice, style, rules (template)
-│   └── GOALS.md                   # What you're trying to do (template)
-├── inputs/
-│   └── EXAMPLE-week.md            # One filled-in example so you see the shape
-├── outputs/
-│   └── .gitkeep                   # Where digests land (gitignored after the example)
-├── .claude/
+<your-agent-name>/                   # cloned starter (Claude Code project root)
+├── README.md                        # You are here
+├── CLAUDE.md                        # Always-loaded by Claude Code — the entry point
+├── homework-prompts.md              # AI-interview prompts for filling in identity files
+├── <your-agent-name>-vault/         # Obsidian vault (renamed from `vault/`)
+│   ├── identity/
+│   │   ├── USER.md                  # Who you are (template to overwrite)
+│   │   ├── SOUL.md                  # Voice, style, rules (template)
+│   │   └── GOALS.md                 # What you're trying to do (template)
+│   ├── inputs/
+│   │   └── EXAMPLE-week.md          # One filled-in example so you see the shape
+│   └── outputs/
+│       └── .gitkeep                 # Where digests land
+├── .claude/                         # Claude Code config — hooks, skills, settings
 │   ├── hooks/
-│   │   ├── LoadMasterPrompt.ts    # THE hook — ~30 lines. TypeScript / Bun
-│   │   └── LoadMasterPrompt.py    # Python variant — same behaviour, same shape
+│   │   ├── LoadMasterPrompt.ts      # THE hook — auto-detects vault, loads identity. TypeScript / Bun
+│   │   └── LoadMasterPrompt.py      # Python variant — same behaviour, same shape
 │   ├── skills/
-│   │   └── create-skill/          # Meta-skill: use this to author your own skills
-│   │       └── SKILL.md           # Single-file skill (Anthropic-style)
-│   └── settings.json              # Registers the hook (committed — shared default)
+│   │   └── create-skill/            # Meta-skill: use this to author your own skills
+│   │       └── SKILL.md             # Single-file skill (Anthropic-style)
+│   └── settings.json                # Registers the hook (committed — shared default)
 ├── .gitignore
-└── LICENSE                        # MIT
+└── LICENSE                          # MIT
 ```
 
 A dozen files, one hook, one meta-skill. You'll be shocked how small it is.
+
+**Why a separate vault folder?** The `<your-agent-name>-vault/` subfolder is a clean Obsidian vault — open it directly in Obsidian for a knowledge-base experience while keeping `.claude/` (code + config) out of the way. This mirrors the convention used in larger personal AI setups (e.g. `life/` containing `life-vault/`).
 
 ## Picking TypeScript or Python for the hook
 
@@ -102,7 +118,7 @@ To switch, edit `.claude/settings.json` — change the `command` field from `bun
 
 ## The hook in one paragraph
 
-On `SessionStart`, the hook reads every `.md` file in `identity/`, wraps them in `<master-prompt>…</master-prompt>` tags, and hands the whole block to Claude Code via the `additionalContext` channel. Claude sees this at the top of every new session — it's as if you pasted your identity files into the first prompt yourself. Deterministic, no LLM call.
+On `SessionStart`, the hook auto-detects your vault folder (any directory named `vault` or ending in `-vault`), reads every `.md` file in `<vault>/identity/`, wraps them in `<master-prompt>…</master-prompt>` tags, and hands the whole block to Claude Code via the `additionalContext` channel. Claude sees this at the top of every new session — it's as if you pasted your identity files into the first prompt yourself. Deterministic, no LLM call.
 
 ## What comes next — Phase 2 and beyond
 

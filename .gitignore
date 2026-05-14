@@ -29,10 +29,19 @@ venv/
 
 # Personal outputs — keep the .gitkeep but ignore everything else,
 # so individual cohort members don't accidentally commit personal digests.
-outputs/*
-!outputs/.gitkeep
+# Patterns cover both `vault/` (default) and `<name>-vault/` (after rename).
+vault/outputs/*
+!vault/outputs/.gitkeep
+*-vault/outputs/*
+!*-vault/outputs/.gitkeep
 
 # Personal inputs — same principle. The EXAMPLE is tracked; anything
 # else you drop in stays local.
-inputs/*
-!inputs/EXAMPLE-week.md
+vault/inputs/*
+!vault/inputs/EXAMPLE-week.md
+*-vault/inputs/*
+!*-vault/inputs/EXAMPLE-week.md
+
+# Obsidian workspace metadata — keep your vault config local
+.obsidian/workspace*
+.obsidian/cache
