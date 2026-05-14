@@ -42,6 +42,11 @@ vault/inputs/*
 *-vault/inputs/*
 !*-vault/inputs/EXAMPLE-week.md
 
-# Obsidian workspace metadata — keep your vault config local
-.obsidian/workspace*
-.obsidian/cache
+# Obsidian — gitignore the entire .obsidian/ folder by default.
+# It contains workspace state (panel positions, open files) that changes
+# constantly, plus theme/plugin settings that are personal to each machine.
+# If you want to share Obsidian config across your own machines later,
+# remove this rule and add specific files (e.g. **/.obsidian/community-plugins.json).
+# The leading **/ makes the pattern match .obsidian/ anywhere in the tree,
+# including inside vault/ or <name>-vault/.
+**/.obsidian/
