@@ -10,6 +10,8 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 
 ## Quick start
 
+> **First time through? Type the commands yourself.** Several steps use `git` (clone, mv, add, commit). For your first run, **type them yourself** so you see what each does and build intuition for what's going on. From day two onward, Claude can drive most git operations on your behalf — just ask *"commit this for me"* and it'll do the typing. But knowing the underlying commands first means you can read what Claude is doing and spot when something looks off.
+
 1. **Pick a name for your agent, then clone**.
 
    First decide what to call your agent — this is the directory name and how you'll think of it day-to-day. Three common patterns:
@@ -30,10 +32,10 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 2. **Personalise your vault folder**. The starter ships with a `vault/` folder containing `identity/`, `inputs/`, and `outputs/` — this is the Obsidian-friendly knowledge area for your agent (separate from `.claude/` which holds the code/config). Rename `vault/` to `<your-agent-name>-vault/` to match the convention used in larger setups (e.g. `chiefofstaff-vault/`, `jarvis-vault/`):
 
    ```
-   mv vault <your-agent-name>-vault
+   git mv vault <your-agent-name>-vault
    ```
 
-   The hook auto-detects any folder named `vault` or ending in `-vault`, so this rename doesn't break anything. (You can skip this step if you prefer — `vault/` works fine.)
+   We use `git mv` rather than plain `mv` so git records this as a single rename operation rather than as five deletions plus a new folder — `git status` stays clean. The hook auto-detects any folder named `vault` or ending in `-vault`, so this rename doesn't break anything. (You can skip the rename if you prefer — `vault/` works fine.)
 
 3. **Open your vault in Obsidian** (optional but recommended). [Obsidian](https://obsidian.md) is a free markdown editor that renders your identity files, inputs, and outputs nicely, and lets you link between notes with `[[double brackets]]`. After installing:
    - Open Obsidian → **Open folder as vault** → select `~/projects/<your-agent-name>/<your-agent-name>-vault/`
@@ -48,26 +50,35 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 
    *Stuck on a blank page?* See `homework-prompts.md` for the AI-interview alternative — paste each prompt into ChatGPT or Claude, let it interview you, paste the output back into the template.
 
-5. **Install Claude Code** if you haven't:
+5. **Commit your work** to bake in this baseline:
+
+   ```
+   git add -A
+   git commit -m "Initial setup: rename vault, fill identity files"
+   ```
+
+   Now you have a clean starting point. If you experiment later and want to roll back, you've got something to roll back to. From here on, you can ask Claude to drive commits for you (*"commit this for me with a sensible message"*) — but having done it once yourself, you'll understand what's being committed and why.
+
+6. **Install Claude Code** if you haven't:
    ```
    npm install -g @anthropic-ai/claude-code
    ```
    (Or follow [claude.com/claude-code](https://claude.com/claude-code).)
 
-6. **Trust the hook**. The first time you open this folder in Claude Code, it will ask if you want to enable the `SessionStart` hook. Say yes.
+7. **Trust the hook**. The first time you open this folder in Claude Code, it will ask if you want to enable the `SessionStart` hook. Say yes.
 
-7. **Run it**:
+8. **Run it**:
    ```
    claude
    ```
    When the session opens, the hook fires and your identity files are loaded. You can test by asking: *"Who am I?"* — Claude should answer using what's in your vault's `identity/` folder.
 
-8. **Generate your first weekly digest**:
+9. **Generate your first weekly digest**:
    - Drop a week's worth of notes as a markdown file into `<your-agent-name>-vault/inputs/` (see the EXAMPLE file for shape)
    - In Claude Code, type: *"Generate this week's digest from my vault's inputs and save it to outputs"*
    - Claude reads the files, uses your identity context to tailor the output, and writes `<your-agent-name>-vault/outputs/digest-YYYY-MM-DD.md`
 
-9. **Build your first custom skill** — use the `create-skill` skill that ships with the starter:
+10. **Build your first custom skill** — use the `create-skill` skill that ships with the starter:
    - Pick something you do repeatedly that you'd like the agent to handle (a daily review, a meeting follow-up, an email draft pattern — anything with a clear trigger and a clear process)
    - In Claude Code, type: *"Use the create-skill skill to help me build a skill for [your idea]."*
    - `create-skill` interviews you on the trigger phrase, the process steps, the inputs and outputs, then generates a `SKILL.md` and places it under `.claude/skills/<your-skill-name>/`
