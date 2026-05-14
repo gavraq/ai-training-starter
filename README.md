@@ -10,15 +10,26 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 
 ## Quick start
 
-1. **Clone this repo** to your machine:
+1. **Pick a name for your agent, then clone**.
+
+   First decide what to call your agent — this is the directory name and how you'll think of it day-to-day. Three common patterns:
+   - **Functional**: `chiefofstaff`, `assistant`, `agent` — descriptive, neutral
+   - **Personal**: `jarvis`, `frikkie`, `mister-banks` — gives the agent a felt presence (recommended — naming things makes you use them)
+   - **Just `my-ai`** if you don't want to decide right now
+
+   Then clone into a `~/projects/` parent directory (a single place where your AI-related work lives):
+
    ```
-   git clone https://github.com/gavraq/ai-training-starter.git my-ai
-   cd my-ai
+   mkdir -p ~/projects && cd ~/projects
+   git clone https://github.com/gavraq/ai-training-starter.git <your-agent-name>
+   cd <your-agent-name>
    ```
+
+   The directory name is just the filesystem location — the agent's *identity* (including its friendly name) lives in `identity/SOUL.md`, which you'll fill in next.
 
 2. **Fill in your identity** — edit the three files in `identity/`:
    - `USER.md` — who you are (roles, background, what you work on)
-   - `SOUL.md` — how you like to work (voice, style, rules, quality bar)
+   - `SOUL.md` — how you like to work (voice, style, rules, quality bar). **The first line of SOUL.md is where your agent's friendly name lives** — e.g. *"You are Jarvis, my personal assistant. ..."*
    - `GOALS.md` — what you're trying to do (short/mid/long-term)
    Treat the templates as prompts. Overwrite completely.
 
