@@ -140,7 +140,7 @@ Ready? Start with Horizon 1: This week / this month.
 
 ## Prompt 4 — Skill ideas (rough brain-dump)
 
-> Don't try to build skills today. Just brain-dump 5–10 ideas. We'll use the `CreateSkill` skill in Session 4 (the build session) to convert at least one of them into a working skill, live.
+> Don't try to build skills today. Just brain-dump 5–10 ideas. We'll use the `create-skill` skill in Session 4 (the build session) to convert at least one of them into a working skill, live.
 
 Paste the following into a fresh AI chat:
 

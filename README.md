@@ -2,7 +2,7 @@
 
 > Your personal AI agent. ~12 files, one hook, plus the meta-skill that lets you build your own. The thinnest useful outer harness on top of Claude Code.
 
-This repo is the teaching template for the **AI Training** course (Session 4 — the build session). The simplest possible personal AI agent: a Claude Code project that auto-loads your identity at every session start, ships with `CreateSkill` so you can author your own skills, and gets out of your way.
+This repo is the teaching template for the **AI Training** course (Session 4 — the build session). The simplest possible personal AI agent: a Claude Code project that auto-loads your identity at every session start, ships with `create-skill` so you can author your own skills, and gets out of your way.
 
 **What it is**: a starting point you clone, fill in with your own identity (Master Prompt), and run Claude Code against. You end up with an agent that already knows who you are, every time you open a session — plus the framework to teach it new tricks.
 
@@ -43,10 +43,10 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
    - In Claude Code, type: *"Generate this week's digest from inputs/ and save it to outputs/"*
    - Claude reads the files, uses your identity context to tailor the output, and writes `outputs/digest-YYYY-MM-DD.md`
 
-7. **Build your first custom skill** — use the `CreateSkill` skill that ships with the starter:
+7. **Build your first custom skill** — use the `create-skill` skill that ships with the starter:
    - Pick something you do repeatedly that you'd like the agent to handle (a daily review, a meeting follow-up, an email draft pattern — anything with a clear trigger and a clear process)
-   - In Claude Code, type: *"Use the CreateSkill skill to help me build a skill for [your idea]."*
-   - `CreateSkill` interviews you on the trigger phrase, the process steps, the inputs and outputs, then generates a `SKILL.md` and places it under `.claude/skills/<YourSkillName>/`
+   - In Claude Code, type: *"Use the create-skill skill to help me build a skill for [your idea]."*
+   - `create-skill` interviews you on the trigger phrase, the process steps, the inputs and outputs, then generates a `SKILL.md` and places it under `.claude/skills/<your-skill-name>/`
    - Restart your Claude Code session and try the trigger phrase — your new skill should fire automatically
 
    This is the meta moment: AI authoring AI configuration. Your *second* skill takes a fraction of the time of your first — every skill you write the agent inherits. That's the compounding return.
@@ -71,9 +71,8 @@ ai-training-starter/
 │   │   ├── LoadMasterPrompt.ts    # THE hook — ~30 lines. TypeScript / Bun
 │   │   └── LoadMasterPrompt.py    # Python variant — same behaviour, same shape
 │   ├── skills/
-│   │   └── CreateSkill/           # Meta-skill: use this to author your own skills
-│   │       ├── SKILL.md
-│   │       └── Workflows/         # Create / Validate / Update / Canonicalize
+│   │   └── create-skill/          # Meta-skill: use this to author your own skills
+│   │       └── SKILL.md           # Single-file skill (Anthropic-style)
 │   └── settings.json              # Registers the hook (committed — shared default)
 ├── .gitignore
 └── LICENSE                        # MIT
@@ -111,7 +110,7 @@ git fetch origin
 git merge origin/phase-2
 ```
 
-Your custom skills from Phase 1 (anything you built with `CreateSkill`) survive the merge — they live in their own folders under `.claude/skills/`.
+Your custom skills from Phase 1 (anything you built with `create-skill`) survive the merge — they live in their own folders under `.claude/skills/`.
 
 **Phases 3–6** (beyond the course):
 - More slash commands (`/reflect`, `/end-of-day`)
