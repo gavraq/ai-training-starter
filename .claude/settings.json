@@ -9,6 +9,26 @@
           }
         ]
       }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run $CLAUDE_PROJECT_DIR/.claude/hooks/PreCompactFlush.ts"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun run $CLAUDE_PROJECT_DIR/.claude/hooks/SessionEndSummary.ts"
+          }
+        ]
+      }
     ]
   },
   "permissions": {
@@ -16,8 +36,14 @@
       "Read",
       "Write(vault/outputs/**)",
       "Write(*-vault/outputs/**)",
+      "Write(vault/daily/**)",
+      "Write(*-vault/daily/**)",
       "Edit(vault/identity/**)",
       "Edit(*-vault/identity/**)",
+      "Edit(vault/MEMORY.md)",
+      "Edit(*-vault/MEMORY.md)",
+      "Write(vault/MEMORY.md)",
+      "Write(*-vault/MEMORY.md)",
       "Bash(mv:*)",
       "Bash(ls:*)",
       "Bash(git status)",
@@ -25,7 +51,10 @@
       "Bash(git log:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

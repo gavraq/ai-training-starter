@@ -1,6 +1,8 @@
 #!/usr/bin/env bun
 /**
- * SessionStart hook: loads <vault>/identity/*.md into the session context.
+ * SessionStart hook: loads <vault>/identity/*.md + <vault>/MEMORY.md
+ * into the session context.
+ *
  * Deterministic, no LLM call. Runs once per session start.
  *
  * Auto-detects the vault directory: looks for any folder named `vault`
@@ -8,7 +10,8 @@
  * This way participants can rename `vault/` → `<their-agent-name>-vault/`
  * after cloning, and the hook still finds it.
  *
- * Reads every .md file in <vault>/identity/, wraps them in a
+ * Reads every .md file in <vault>/identity/, plus <vault>/MEMORY.md if
+ * present (Phase 2 — curated long-term memory). Wraps them in a
  * <master-prompt>...</master-prompt> block, and hands the block to
  * Claude Code via the additionalContext channel.
  *
@@ -62,6 +65,14 @@ for (const f of files) {
   const content = readFileSync(join(identityDir, f), 'utf-8');
   parts.push(`--- ${f} ---`);
   parts.push(content);
+  parts.push('');
+}
+
+// Phase 2: also load <vault>/MEMORY.md (curated long-term memory) if present
+const memoryPath = join(cwd, vaultDir, 'MEMORY.md');
+if (existsSync(memoryPath)) {
+  parts.push('--- MEMORY.md ---');
+  parts.push(readFileSync(memoryPath, 'utf-8'));
   parts.push('');
 }
 

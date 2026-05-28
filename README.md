@@ -1,4 +1,51 @@
-# AI Training Starter — Phase 1
+# AI Training Starter — Phase 2 (Memory + Self-Improvement)
+
+> Your personal AI agent now remembers what happened *and* keeps its own Master Prompt up to date. Phase 1 plus two memory hooks, a `MEMORY.md` curated layer, and a `/master-prompt` self-improvement slash command.
+
+This is the **Phase 2 branch** of the AI Training starter. It builds directly on Phase 1 (the `main` branch) and adds the bits that S4 left out: cross-session memory, a curated long-term memory file, and the self-improvement loop that keeps your identity files current with how you're actually working.
+
+**What's added vs Phase 1**:
+
+| What | Where | What it does |
+|------|-------|--------------|
+| `PreCompactFlush.ts` hook | `.claude/hooks/` | Writes a session summary to `<vault>/daily/YYYY-MM-DD.md` *before* Claude Code compacts the conversation. Catches detail that would otherwise be lost. |
+| `SessionEndSummary.ts` hook | `.claude/hooks/` | Writes a final session summary to `<vault>/daily/` when the session ends (manual exit, timeout). Deterministic — no LLM call. |
+| `lib/transcript.ts` | `.claude/hooks/lib/` | Shared helper both hooks use to parse the session jsonl + format markdown. ~130 lines, readable. |
+| `MEMORY.md` template | `vault/MEMORY.md` | Curated long-term memory — decisions, preferences, patterns. The 5% of `daily/` content worth re-reading every session. Auto-loaded by `LoadMasterPrompt` alongside the identity files. |
+| `/master-prompt` slash command | `.claude/commands/` | Reads your identity files + MEMORY.md + recent daily logs, and proposes concrete updates to keep your Master Prompt fresh. Forte's self-improvement loop, wired to one keystroke. |
+| `LoadMasterPrompt` updates | `.claude/hooks/` (both TS + Py) | Now also loads `<vault>/MEMORY.md` if present, so curated memory rides alongside identity in every session's `<master-prompt>` block. |
+| `settings.json` updates | `.claude/` | Registers the two new hooks. Adds write permissions for `<vault>/daily/**` and `<vault>/MEMORY.md`. |
+
+**What's the same as Phase 1**: identity files (SOUL / USER / GOALS), the `LoadMasterPrompt` SessionStart hook (still finds your vault by name), the `create-skill` meta-skill, `homework-prompts.md`, the vault subdirectory model (`vault/` or `<name>-vault/`).
+
+**What's deliberately NOT in this Phase 2**: no formal `WeeklyDigest` skill (cohort members build their own week-ahead skill via `create-skill` instead — same recipe). No connectors (Gmail, Calendar) — those land in S6. No `/master-prompt` automation (cron-driven daily reflection is Phase 3+ territory).
+
+---
+
+## Merging Phase 2 into your own repo
+
+After S4b's homework, your `origin` remote now points at *your* private GitHub repo, not the starter. To pull in the Phase 2 additions you need to add the starter as a second remote (conventionally `upstream`) and merge from there. Easiest path — ask your agent:
+
+> *"Add github.com/gavraq/ai-training-starter as an upstream remote, fetch the phase-2 branch, and merge the Phase 2 additions in. Walk me through any conflicts before committing."*
+
+Or do it yourself:
+
+```
+git remote add upstream https://github.com/gavraq/ai-training-starter.git
+git fetch upstream
+git merge upstream/phase-2
+```
+
+Conflicts you might hit:
+- `.claude/settings.json` — if you customised it (e.g. swapped the TS hook for the Python variant). Merge the new hook registrations + permissions alongside your changes.
+- `.gitignore` — if you added your own entries, both sets need to be present.
+- `README.md` — your local one is probably untouched; phase-2's will overwrite cleanly. If you customised yours, decide what to keep.
+
+Files that are pure additions (no conflict): the two new hooks, `lib/transcript.ts`, `.claude/commands/master-prompt.md`, `vault/MEMORY.md`, `vault/daily/.gitkeep`.
+
+---
+
+## Original Phase 1 quick start (still useful — kept for reference)
 
 > Your personal AI agent. ~12 files, one hook, plus the meta-skill that lets you build your own. The thinnest useful outer harness on top of Claude Code.
 
@@ -6,7 +53,7 @@ This repo is the teaching template for the **AI Training** course (Session 4 —
 
 **What it is**: a starting point you clone, fill in with your own identity (Master Prompt), and run Claude Code against. You end up with an agent that already knows who you are, every time you open a session — plus the framework to teach it new tricks.
 
-**What it is not**: a fully-featured assistant. No memory across sessions yet. No tool integrations (Gmail, Calendar, etc.). The formal `WeeklyDigest` skill, memory hooks, and self-improvement slash command all ship in Phase 2.
+**What it is not (in Phase 1 alone)**: a fully-featured assistant. No memory across sessions yet — that's what Phase 2 (this branch) adds.
 
 ## Quick start
 

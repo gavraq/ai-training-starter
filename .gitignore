@@ -42,6 +42,14 @@ vault/inputs/*
 *-vault/inputs/*
 !*-vault/inputs/EXAMPLE-week.md
 
+# Personal daily logs (Phase 2: written by PreCompactFlush + SessionEndSummary
+# hooks). Keep the folder (.gitkeep) but not its contents — daily logs are
+# personal session history that shouldn't be pushed to a shared/public repo.
+vault/daily/*
+!vault/daily/.gitkeep
+*-vault/daily/*
+!*-vault/daily/.gitkeep
+
 # Obsidian — gitignore the entire .obsidian/ folder by default.
 # It contains workspace state (panel positions, open files) that changes
 # constantly, plus theme/plugin settings that are personal to each machine.

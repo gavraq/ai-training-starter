@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SessionStart hook: loads <vault>/identity/*.md into the session context.
+"""SessionStart hook: loads <vault>/identity/*.md + <vault>/MEMORY.md into the session context.
 
 Deterministic, no LLM call. Runs once per session start.
 
@@ -8,7 +8,8 @@ or ending in `-vault` (e.g. `chiefofstaff-vault`, `jarvis-vault`).
 This way participants can rename `vault/` -> `<their-agent-name>-vault/`
 after cloning, and the hook still finds it.
 
-Reads every .md file in <vault>/identity/, wraps them in a
+Reads every .md file in <vault>/identity/, plus <vault>/MEMORY.md if
+present (Phase 2 - curated long-term memory). Wraps them in a
 <master-prompt>...</master-prompt> block, and hands the block to
 Claude Code via the additionalContext channel.
 
@@ -60,6 +61,13 @@ parts = [
 for f in files:
     parts.append(f"--- {f.name} ---")
     parts.append(f.read_text())
+    parts.append("")
+
+# Phase 2: also load <vault>/MEMORY.md (curated long-term memory) if present
+memory_path = vault_dir / "MEMORY.md"
+if memory_path.exists():
+    parts.append("--- MEMORY.md ---")
+    parts.append(memory_path.read_text())
     parts.append("")
 
 parts.append("</master-prompt>")
