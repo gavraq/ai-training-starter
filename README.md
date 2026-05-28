@@ -8,9 +8,9 @@ This is the **Phase 2 branch** of the AI Training starter. It builds directly on
 
 | What | Where | What it does |
 |------|-------|--------------|
-| `PreCompactFlush.ts` hook | `.claude/hooks/` | Writes a session summary to `<vault>/daily/YYYY-MM-DD.md` *before* Claude Code compacts the conversation. Catches detail that would otherwise be lost. |
-| `SessionEndSummary.ts` hook | `.claude/hooks/` | Writes a final session summary to `<vault>/daily/` when the session ends (manual exit, timeout). Deterministic — no LLM call. |
-| `lib/transcript.ts` | `.claude/hooks/lib/` | Shared helper both hooks use to parse the session jsonl + format markdown. ~130 lines, readable. |
+| `PreCompactFlush.ts` + `.py` hook | `.claude/hooks/` | Writes a session summary to `<vault>/daily/YYYY-MM-DD.md` *before* Claude Code compacts the conversation. Catches detail that would otherwise be lost. Both TypeScript (default) and Python variants ship — same behaviour. |
+| `SessionEndSummary.ts` + `.py` hook | `.claude/hooks/` | Writes a final session summary to `<vault>/daily/` when the session ends (manual exit, timeout). Deterministic — no LLM call. Both TypeScript and Python variants ship. |
+| `lib/transcript.ts` + `.py` | `.claude/hooks/lib/` | Shared helpers both hooks use to parse the session jsonl + format markdown. ~130 lines each, readable. |
 | `MEMORY.md` template | `vault/MEMORY.md` | Curated long-term memory — decisions, preferences, patterns. The 5% of `daily/` content worth re-reading every session. Auto-loaded by `LoadMasterPrompt` alongside the identity files. |
 | `/master-prompt` slash command | `.claude/commands/` | Reads your identity files + MEMORY.md + recent daily logs, and proposes concrete updates to keep your Master Prompt fresh. Forte's self-improvement loop, wired to one keystroke. |
 | `LoadMasterPrompt` updates | `.claude/hooks/` (both TS + Py) | Now also loads `<vault>/MEMORY.md` if present, so curated memory rides alongside identity in every session's `<master-prompt>` block. |
@@ -41,7 +41,25 @@ Conflicts you might hit:
 - `.gitignore` — if you added your own entries, both sets need to be present.
 - `README.md` — your local one is probably untouched; phase-2's will overwrite cleanly. If you customised yours, decide what to keep.
 
-Files that are pure additions (no conflict): the two new hooks, `lib/transcript.ts`, `.claude/commands/master-prompt.md`, `vault/MEMORY.md`, `vault/daily/.gitkeep`.
+Files that are pure additions (no conflict): the two new hooks (both `.ts` and `.py` variants), `lib/transcript.ts` + `lib/transcript.py`, `.claude/commands/master-prompt.md`, `vault/MEMORY.md`, `vault/daily/.gitkeep`.
+
+### Using the Python variant of the hooks
+
+If you switched to the Python variant of `LoadMasterPrompt` in S4 (because Bun wasn't installed), the same swap works for the two new memory hooks. After merging, edit `.claude/settings.json` and change the three hook commands from:
+
+```
+bun run $CLAUDE_PROJECT_DIR/.claude/hooks/<HookName>.ts
+```
+
+to:
+
+```
+python3 $CLAUDE_PROJECT_DIR/.claude/hooks/<HookName>.py
+```
+
+Three lines to change (one per registered hook). Or — easier — ask your agent: *"Switch all three hooks in settings.json to use the Python variants."* Your agent will do the edit.
+
+Same behaviour either way. The Python hooks read the same jsonl, produce the same daily-log markdown, write to the same place.
 
 ---
 
