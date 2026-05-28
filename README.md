@@ -11,10 +11,10 @@ This is the **Phase 2 branch** of the AI Training starter. It builds directly on
 | `PreCompactFlush.ts` + `.py` hook | `.claude/hooks/` | Writes a session summary to `<vault>/daily/YYYY-MM-DD.md` *before* Claude Code compacts the conversation. Catches detail that would otherwise be lost. Both TypeScript (default) and Python variants ship — same behaviour. |
 | `SessionEndSummary.ts` + `.py` hook | `.claude/hooks/` | Writes a final session summary to `<vault>/daily/` when the session ends (manual exit, timeout). Deterministic — no LLM call. Both TypeScript and Python variants ship. |
 | `lib/transcript.ts` + `.py` | `.claude/hooks/lib/` | Shared helpers both hooks use to parse the session jsonl + format markdown. ~130 lines each, readable. |
-| `MEMORY.md` template | `vault/MEMORY.md` | Curated long-term memory — decisions, preferences, patterns. The 5% of `daily/` content worth re-reading every session. Auto-loaded by `LoadMasterPrompt` alongside the identity files. |
+| `MEMORY.md` template | `vault/identity/MEMORY.md` | Curated long-term memory — decisions, preferences, patterns. The 5% of `daily/` content worth re-reading every session. **Lives in `identity/` alongside SOUL / USER / GOALS** so the same `LoadMasterPrompt` loop loads it — no special-case code. |
 | `/master-prompt` slash command | `.claude/commands/` | Reads your identity files + MEMORY.md + recent daily logs, and proposes concrete updates to keep your Master Prompt fresh. Forte's self-improvement loop, wired to one keystroke. |
-| `LoadMasterPrompt` updates | `.claude/hooks/` (both TS + Py) | Now also loads `<vault>/MEMORY.md` if present, so curated memory rides alongside identity in every session's `<master-prompt>` block. |
-| `settings.json` updates | `.claude/` | Registers the two new hooks. Adds write permissions for `<vault>/daily/**` and `<vault>/MEMORY.md`. |
+| `LoadMasterPrompt` updates | `.claude/hooks/` (both TS + Py) | No special-casing — MEMORY.md sits in `identity/` and gets loaded by the existing `identity/*.md` loop. Docstring updated; the hook itself is simpler than before. |
+| `settings.json` updates | `.claude/` | Registers the two new hooks. Adds write permissions for `<vault>/daily/**` and `<vault>/identity/MEMORY.md`. |
 
 **What's the same as Phase 1**: identity files (SOUL / USER / GOALS), the `LoadMasterPrompt` SessionStart hook (still finds your vault by name), the `create-skill` meta-skill, `homework-prompts.md`, the vault subdirectory model (`vault/` or `<name>-vault/`).
 
@@ -41,7 +41,7 @@ Conflicts you might hit:
 - `.gitignore` — if you added your own entries, both sets need to be present.
 - `README.md` — your local one is probably untouched; phase-2's will overwrite cleanly. If you customised yours, decide what to keep.
 
-Files that are pure additions (no conflict): the two new hooks (both `.ts` and `.py` variants), `lib/transcript.ts` + `lib/transcript.py`, `.claude/commands/master-prompt.md`, `vault/MEMORY.md`, `vault/daily/.gitkeep`.
+Files that are pure additions (no conflict): the two new hooks (both `.ts` and `.py` variants), `lib/transcript.ts` + `lib/transcript.py`, `.claude/commands/master-prompt.md`, `vault/identity/MEMORY.md`, `vault/daily/.gitkeep`.
 
 ### Using the Python variant of the hooks
 

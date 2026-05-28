@@ -1,10 +1,12 @@
 # MEMORY — Curated Long-Term Memory
 
 > Key decisions, preferences, and patterns that should persist across sessions.
-> Loaded at session start alongside the identity files (SOUL, USER, GOALS).
+> Loaded at session start alongside SOUL.md / USER.md / GOALS.md — all four
+> live in `identity/`, and the `LoadMasterPrompt` hook loads every `.md`
+> file in this folder.
 >
 > **Keep concise.** If it's not worth re-reading every session, it doesn't belong here.
-> Raw session detail lives in `daily/` — MEMORY.md is the 5% that matters across weeks.
+> Raw session detail lives in `<vault>/daily/` — MEMORY.md is the 5% that matters across weeks.
 
 ## Preferences
 

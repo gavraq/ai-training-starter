@@ -18,7 +18,7 @@ Reads your current identity files and MEMORY.md, then reads recent session logs 
    - `<vault>/identity/USER.md`
    - `<vault>/identity/SOUL.md`
    - `<vault>/identity/GOALS.md`
-   - `<vault>/MEMORY.md`
+   - `<vault>/identity/MEMORY.md`
    - `CLAUDE.md` (at the project root — the agent's operating manual)
 
 3. **Read recent sessions** — the 5 most recent files in `<vault>/daily/` (or all of them if there are fewer than 5). If `<vault>/daily/` doesn't exist yet or is empty, say so and stop — there's nothing to review.
