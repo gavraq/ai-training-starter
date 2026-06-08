@@ -319,7 +319,7 @@ Bring your "what's my MCP server?" sketch. And the message to carry in: **keep i
   - [Second Google Calendar (self-hosted)](./guides/gcal-mcp-second-account-setup.md)
   - [Swap the Gmail connector (no-setup alternative)](./guides/gmail-mcp-swap-connector.md)
 - **AI Training Notes server**: https://aitraining.gavinslater.co.uk — open it in a browser; it tells your *agent* what to do, not you
-- **Session 5 notes** (Phase 2 — memory + self-improvement): https://github.com/gavraq/ai-training-starter/blob/phase-2/session-5-notes.md
+- **Session 5 notes** (Phase 2 — memory + self-improvement): https://github.com/gavraq/ai-training-starter/blob/main/session-5-notes.md
 - **Session 4a notes** (installation + Phase 1 setup): https://github.com/gavraq/ai-training-starter/blob/main/session-4a-notes.md
 
 ---
